@@ -52,7 +52,7 @@ Execution details: concurrency = 1, temperature = 0.0, measured `max_tokens = 51
 
 ## Interpretation
 
-The equal-token rewrite invalidates the whole cached prefix: cache drops from 5,488 to ~213 tokens and uncached input rises to 7,549, so TTFT is +27.9 ms (≈1.7x `append_only`). The shorter rewrite also invalidates the prefix but still arrives only ~3.8 ms later than `append_only` despite being 30% shorter in total tokens (TTFT ≈1.10x). The runner-wide regression is ~5.1 ms per 1k uncached tokens. Answer accuracy stays high (84/74/80%), so the cost is timing, not correctness. A shorter rewrite becomes beneficial only if it shortens the total prompt enough to offset lost cached prefix; the run's break-even is ≈0.32 of A's total tokens (~2,487 tokens).
+The equal-token rewrite invalidates the whole cached prefix: cache drops from 5,488 to ~213 tokens and uncached input rises to 7,549, so TTFT is +27.9 ms (≈1.7x `append_only`). The shorter rewrite also invalidates the prefix but still arrives only ~3.8 ms later than `append_only` despite being 30% shorter in total tokens (TTFT ≈1.10x). The runner-wide regression is ~5.1 ms per 1k uncached tokens. Answer accuracy stays high (84/74/80%), so the cost is timing, not correctness (at least for simpler QnA question, check report.MD for detail). A shorter rewrite becomes beneficial only if it shortens the total prompt enough to offset lost cached prefix; the run's break-even is ≈0.32 of A's total tokens (~2,487 tokens).
 
 ## Artifacts
 
