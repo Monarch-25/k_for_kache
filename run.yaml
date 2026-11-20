@@ -1,0 +1,79 @@
+# =============================================================================
+# Prefix-Cache Invalidation Benchmark - Master Configuration
+#
+# Hypothesis under test (reader comment):
+#   On a prefix-caching runner, appending a tool result to an existing agent
+#   conversation is cheap (only the new tokens are prefetched), while rewriting
+#   an earlier summary invalidates the downstream KV blocks and forces a cold
+#   prefill of the whole suffix - even when the rewritten prompt is SHORTER.
+#
+# Everything in this file is declarative. `benchmark_prefix_vs_rewrite.py`
+# reads it, starts/serves vLLM, runs the paired experiment, and writes results.
+# =============================================================================
+
+infrastructure:
+  provider: jarvislabs            # cloud provider
+  cli: jl                         # jarvislabs CLI used for lifecycle
+  gpu: RTX PRO 6000 Blackwell     # NVIDIA RTX PRO 6000 Blackwell, 96 GB GDDR7
+  gpu_id: RTX-PRO6000             # exact `jl gpus --json` identifier
+  vm: true                        # VMs are required for port 22 / bare SSH
+  storage_gb: 150                 # weights + wheels + logs headroom
+  region: IN1
+  instance_name: vllm-prefix-bench-6000
+  auto_cleanup: destroy           # pause | destroy (destroy after artifacts pulled)
+
+vllm_server:
+  host: 127.0.0.1
+  port: 8000
+  model: Qwen/Qwen2.5-14B-Instruct   # overridable; non-thinking instruct model
+  served_model_name: Qwen2.5-14B-Instruct
+  dtype: bfloat16
+  max_model_len: 32768
+  gpu_memory_utilization: 0.90
+  enable_prefix_caching: true
+  enable_prompt_tokens_details: true  # added only if supported by installed vLLM
+  block_size: 16                      # recorded exactly from startup logs too
+  trust_remote_code: false
+  startup_timeout_s: 3600
+  request_timeout_s: 900
+  hf_home: /home/ubuntu/hf             # HF cache on the VM
+  extra_args: []                       # escape hatch for version-specific flags
+
+benchmark:
+  seed: 42
+  warmup_trials: 5            # warmup samples; each cycles all three arms, discarded
+  num_scenarios: 10
+  trials_per_scenario: 5      # 10 x 5 = 50 paired evaluations per arm
+  concurrency: 1              # fixed by protocol
+  temperature: 0.0
+  max_tokens: 512             # room for verbose reasoning before FINAL line
+  prime_max_tokens: 8         # Turn-1 priming completion; discarded
+  prefix_target_tokens: 5500  # Turn-1 context budget (tokenizer-accurate)
+  tool_output_target_tokens: 2200
+  token_parity_tolerance: 2   # |T_B - T_A| <= 2 tokens
+  shorter_prompt_target_ratio: 0.70  # T_C ~= 0.70 * T_A (25-35% shorter band)
+  shorter_prompt_min_ratio: 0.65
+  shorter_prompt_max_ratio: 0.75
+  request_retries: 2
+  prime_settle_s: 0.05
+  metrics_settle_s: 0.20
+
+arms:
+  - append_only              # baseline: byte-identical prefix + tool result
+  - rewrite_equal_tokens     # early summary rewrite, total tokens equal to A
+  - rewrite_shorter_prompt   # early summary compression, ~30% shorter than A
+
+outputs:
+  dir: results
+  raw_jsonl: results/raw_trials.jsonl
+  summary_csv: results/summary_metrics.csv
+  summary_json: results/summary_metrics.json
+  server_log: results/vllm_server.log
+  serve_config_json: results/serve_config.json
+  telemetry_json: results/server_telemetry.json
+  charts:
+    ttft_comparison: results/ttft_comparison.png
+    uncached_tokens_vs_ttft: results/uncached_tokens_vs_ttft.png
+    shorter_prompt_paradox: results/shorter_prompt_paradox.png
+  report_md: REPORT.md
+  notebook: prefill_cache_benchmark.ipynb

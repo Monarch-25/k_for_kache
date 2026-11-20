@@ -1,0 +1,1102 @@
+{
+  "generated_at": "2026-11-20T19:57:54.345372+00:00",
+  "config": {
+    "vllm_server": {
+      "host": "127.0.0.1",
+      "port": 8000,
+      "model": "Qwen/Qwen2.5-14B-Instruct",
+      "served_model_name": "Qwen2.5-14B-Instruct",
+      "dtype": "bfloat16",
+      "max_model_len": 32768,
+      "gpu_memory_utilization": 0.9,
+      "enable_prefix_caching": true,
+      "enable_prompt_tokens_details": true,
+      "block_size": 16,
+      "trust_remote_code": false,
+      "startup_timeout_s": 3600,
+      "request_timeout_s": 900,
+      "extra_args": [],
+      "hf_home": "/home/ubuntu/hf"
+    },
+    "benchmark": {
+      "seed": 42,
+      "warmup_trials": 5,
+      "num_scenarios": 10,
+      "trials_per_scenario": 5,
+      "concurrency": 1,
+      "temperature": 0.0,
+      "max_tokens": 512,
+      "prime_max_tokens": 8,
+      "prefix_target_tokens": 5500,
+      "tool_output_target_tokens": 2200,
+      "token_parity_tolerance": 2,
+      "shorter_prompt_target_ratio": 0.7,
+      "shorter_prompt_min_ratio": 0.65,
+      "shorter_prompt_max_ratio": 0.75,
+      "request_retries": 2,
+      "prime_settle_s": 0.05,
+      "metrics_settle_s": 0.2
+    },
+    "outputs": {
+      "dir": "results",
+      "raw_jsonl": "results/raw_trials.jsonl",
+      "summary_csv": "results/summary_metrics.csv",
+      "summary_json": "results/summary_metrics.json",
+      "server_log": "results/vllm_server.log",
+      "serve_config_json": "results/serve_config.json",
+      "telemetry_json": "results/server_telemetry.json",
+      "charts": {
+        "ttft_comparison": "results/ttft_comparison.png",
+        "uncached_tokens_vs_ttft": "results/uncached_tokens_vs_ttft.png",
+        "shorter_prompt_paradox": "results/shorter_prompt_paradox.png"
+      },
+      "report_md": "REPORT.md",
+      "notebook": "prefill_cache_benchmark.ipynb"
+    },
+    "infrastructure": {
+      "provider": "jarvislabs",
+      "cli": "jl",
+      "gpu": "RTX PRO 6000 Blackwell",
+      "gpu_id": "RTX-PRO6000",
+      "vm": true,
+      "storage_gb": 150,
+      "region": "IN1",
+      "instance_name": "vllm-prefix-bench-6000",
+      "auto_cleanup": "destroy"
+    },
+    "arms": [
+      "append_only",
+      "rewrite_equal_tokens",
+      "rewrite_shorter_prompt"
+    ],
+    "_config_path": "/home/ubuntu/cache_test/cache_test/run.yaml",
+    "_root": "/home/ubuntu/cache_test/cache_test"
+  },
+  "environment": {
+    "gpu": {
+      "name": "NVIDIA RTX PRO 6000 Blackwell Server Edition",
+      "uuid": "GPU-9ff03fea-54ff-ce47-37ab-af63019f801c",
+      "memory.total": "97887",
+      "memory.used": "86151",
+      "memory.free": "11102",
+      "driver_version": "595.91.07",
+      "temperature.gpu": "30",
+      "power.draw": "85.17",
+      "power.limit": "600.00",
+      "clocks.current.sm": "2370",
+      "clocks.max.sm": "2430",
+      "_full_nvidia_smi": "Fri Nov 20 19:55:30 2026       \n+-----------------------------------------------------------------------------------------+\n| NVIDIA-SMI 595.91.07              Driver Version: 595.91.07      CUDA Version: 13.2     |\n+-----------------------------------------+------------------------+----------------------+\n| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |\n| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |\n|                                         |                        |               MIG M. |\n|=========================================+========================+======================|\n|   0  NVIDIA RTX PRO 6000 Blac...    Off |   00000000:07:00.0 Off |                    0 |\n| N/A   30C    P0             85W /  600W |   86151MiB /  97887MiB |      0%      Default |\n|                                         |                        |             Disabled |\n+-----------------------------------------+------------------------+----------------------+\n\n+-----------------------------------------------------------------------------------------+\n| Processes:                                                                              |\n|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |\n|        ID   ID                                                               Usage      |\n|=========================================================================================|\n|    0   N/A  N/A           13540      C   VLLM::EngineCore                      86142MiB |\n+-----------------------------------------------------------------------------------------+\n"
+    },
+    "versions": {
+      "vllm": "0.34.0",
+      "torch": "2.14.0",
+      "transformers": "5.22.2",
+      "httpx": "0.28.1"
+    },
+    "torch_runtime": {
+      "torch": "2.14.0+cu130",
+      "cuda_runtime": "13.0"
+    },
+    "serve_command": [
+      "/home/ubuntu/venv/bin/python",
+      "-m",
+      "vllm.entrypoints.openai.api_server",
+      "Qwen/Qwen2.5-14B-Instruct",
+      "--host",
+      "127.0.0.1",
+      "--port",
+      "8000",
+      "--served-model-name",
+      "Qwen2.5-14B-Instruct",
+      "--dtype",
+      "bfloat16",
+      "--max-model-len",
+      "32768",
+      "--gpu-memory-utilization",
+      "0.9",
+      "--enable-prefix-caching",
+      "--enable-prompt-tokens-details",
+      "--block-size",
+      "16"
+    ],
+    "server_reused": false,
+    "server": {
+      "kv_cache_tokens": 759296.0,
+      "kv_cache_memory_gib": "81.54",
+      "max_concurrency": 23.17,
+      "log_lines": [
+        "(EngineCore pid=13540) INFO 11-20 19:55:13 [utils.py:419] Using LBNHC KV cache layout.",
+        "(EngineCore pid=13540) INFO 11-20 19:55:17 [gpu_worker.py:795] Available KV cache memory: 81.54 GiB",
+        "(EngineCore pid=13540) INFO 11-20 19:55:22 [gpu_worker.py:1175] Free memory on device (94.27/94.97 GiB) on startup. Desired GPU memory utilization is (0.9, 85.48 GiB). Actual usage is 1.89 GiB for consumed memory (weights + non-torch), 2.05 GiB for peak activation, and 0.31 GiB for CUDAGraph memory. Replace gpu_memory_utilization config with `--kv-cache-memory=87063821620` (81.08 GiB) to fit into requested memory, or `--kv-cache-memory=96502041088` (89.87 GiB) to fully utilize gpu memory. Current kv cache memory in use is 81.54 GiB.",
+        "(EngineCore pid=13540) WARNING 11-20 19:55:25 [extensible_kv_cache.py:662] gpu_memory_utilization=0.9 caps this instance at 85.48 GiB, keeping 7.25 GiB of free device memory out of the KV cache. The extensible KV cache is sized from the memory measured after warmup and CUDA graph capture, so vLLM's own use needs no headroom below 1.0. Leave gpu_memory_utilization unset unless it leaves room for memory vLLM does not measure: other processes sharing the GPU (including ones that allocate on it later), the CPU on a unified-memory device, weight transfer buffers for weight updates, or a KV connector's own device buffers.",
+        "(EngineCore pid=13540) INFO 11-20 19:55:25 [extensible_kv_cache.py:693] Memory after warmup: 91.89 GiB free, 0.05 GiB committed to the KV cache, 2.05 GiB kept for transient activations (2.05 GiB allocated at peak, 0.64 GiB of torch reservation growth); 47456 KV cache blocks (81.1 GiB) fit within the requested 85.48 GiB. Torch may reserve up to 12.38 GiB.",
+        "(EngineCore pid=13540) INFO 11-20 19:55:25 [kv_cache_utils.py:1168] GPU KV cache size: 759,296 tokens, Maximum concurrency for 32,768 tokens per request: 23.17x",
+        "(EngineCore pid=13540) INFO 11-20 19:55:25 [extensible_kv_cache.py:536] Extended KV cache to 47456 blocks (81.10 GiB).",
+        "(EngineCore pid=13540) INFO 11-20 19:55:25 [core.py:451] init engine (profile, create kv cache, warmup model) took 12.39 s (compilation: 0.12 s)",
+        "(APIServer pid=13440) INFO 11-20 19:55:37 [loggers.py:335] Engine 000: Avg prompt throughput: 6262.7 tokens/s, Avg generation throughput: 84.0 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 14.7%",
+        "(APIServer pid=13440) INFO 11-20 19:55:47 [loggers.py:335] Engine 000: Avg prompt throughput: 12063.0 tokens/s, Avg generation throughput: 171.1 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 15.8%",
+        "(APIServer pid=13440) INFO 11-20 19:55:57 [loggers.py:335] Engine 000: Avg prompt throughput: 12611.6 tokens/s, Avg generation throughput: 184.7 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 15.8%",
+        "(APIServer pid=13440) INFO 11-20 19:56:07 [loggers.py:335] Engine 000: Avg prompt throughput: 11540.5 tokens/s, Avg generation throughput: 183.2 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 1.0%, Prefix cache hit rate: 16.1%",
+        "(APIServer pid=13440) INFO 11-20 19:56:17 [loggers.py:335] Engine 000: Avg prompt throughput: 11314.1 tokens/s, Avg generation throughput: 177.2 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 16.3%",
+        "(APIServer pid=13440) INFO 11-20 19:56:27 [loggers.py:335] Engine 000: Avg prompt throughput: 13144.7 tokens/s, Avg generation throughput: 162.2 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 15.6%",
+        "(APIServer pid=13440) INFO 11-20 19:56:37 [loggers.py:335] Engine 000: Avg prompt throughput: 13168.0 tokens/s, Avg generation throughput: 153.5 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.7%, Prefix cache hit rate: 15.5%",
+        "(APIServer pid=13440) INFO 11-20 19:56:47 [loggers.py:335] Engine 000: Avg prompt throughput: 11835.1 tokens/s, Avg generation throughput: 174.4 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.7%, Prefix cache hit rate: 15.7%",
+        "(APIServer pid=13440) INFO 11-20 19:56:57 [loggers.py:335] Engine 000: Avg prompt throughput: 11536.4 tokens/s, Avg generation throughput: 201.4 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 15.8%",
+        "(APIServer pid=13440) INFO 11-20 19:57:07 [loggers.py:335] Engine 000: Avg prompt throughput: 12622.1 tokens/s, Avg generation throughput: 166.1 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 15.8%",
+        "(APIServer pid=13440) INFO 11-20 19:57:17 [loggers.py:335] Engine 000: Avg prompt throughput: 12622.9 tokens/s, Avg generation throughput: 169.1 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 15.8%",
+        "(APIServer pid=13440) INFO 11-20 19:57:27 [loggers.py:335] Engine 000: Avg prompt throughput: 11539.7 tokens/s, Avg generation throughput: 173.5 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 1.0%, Prefix cache hit rate: 15.9%",
+        "(APIServer pid=13440) INFO 11-20 19:57:37 [loggers.py:335] Engine 000: Avg prompt throughput: 11310.6 tokens/s, Avg generation throughput: 174.9 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 16.0%",
+        "(APIServer pid=13440) INFO 11-20 19:57:47 [loggers.py:335] Engine 000: Avg prompt throughput: 12614.2 tokens/s, Avg generation throughput: 170.6 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 1.0%, Prefix cache hit rate: 16.0%"
+      ],
+      "preempt_mentions": 0,
+      "log_bytes": 68467
+    }
+  },
+  "run": {
+    "measured_requests": 150,
+    "warmup_requests": 15,
+    "failed_requests": 0,
+    "preemptions_delta": 0.0,
+    "gpu_end": {
+      "name": "NVIDIA RTX PRO 6000 Blackwell Server Edition",
+      "uuid": "GPU-9ff03fea-54ff-ce47-37ab-af63019f801c",
+      "memory.total": "97887",
+      "memory.used": "86575",
+      "memory.free": "10678",
+      "driver_version": "595.91.07",
+      "temperature.gpu": "43",
+      "power.draw": "204.64",
+      "power.limit": "600.00",
+      "clocks.current.sm": "2415",
+      "clocks.max.sm": "2430",
+      "_full_nvidia_smi": "Fri Nov 20 19:57:54 2026       \n+-----------------------------------------------------------------------------------------+\n| NVIDIA-SMI 595.91.07              Driver Version: 595.91.07      CUDA Version: 13.2     |\n+-----------------------------------------+------------------------+----------------------+\n| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |\n| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |\n|                                         |                        |               MIG M. |\n|=========================================+========================+======================|\n|   0  NVIDIA RTX PRO 6000 Blac...    Off |   00000000:07:00.0 Off |                    0 |\n| N/A   42C    P0            188W /  600W |   86575MiB /  97887MiB |      0%      Default |\n|                                         |                        |             Disabled |\n+-----------------------------------------+------------------------+----------------------+\n\n+-----------------------------------------------------------------------------------------+\n| Processes:                                                                              |\n|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |\n|        ID   ID                                                               Usage      |\n|=========================================================================================|\n|    0   N/A  N/A           13540      C   VLLM::EngineCore                      86566MiB |\n+-----------------------------------------------------------------------------------------+\n"
+    },
+    "run_metrics_start": {
+      "python_gc_objects_collected_total": 19044.0,
+      "python_gc_objects_uncollectable_total": 0.0,
+      "python_gc_collections_total": 2391.0,
+      "python_info": 1.0,
+      "process_virtual_memory_bytes": 11670151168.0,
+      "process_resident_memory_bytes": 1489313792.0,
+      "process_start_time_seconds": 1795204489.66,
+      "process_cpu_seconds_total": 16.03,
+      "process_open_fds": 47.0,
+      "process_max_fds": 65535.0,
+      "vllm:estimated_flops_per_gpu_total": 0.0,
+      "vllm:estimated_flops_per_gpu_created": 1795204526.2153463,
+      "vllm:estimated_read_bytes_per_gpu_total": 0.0,
+      "vllm:estimated_read_bytes_per_gpu_created": 1795204526.2153702,
+      "vllm:estimated_write_bytes_per_gpu_total": 0.0,
+      "vllm:estimated_write_bytes_per_gpu_created": 1795204526.2153838,
+      "vllm:num_requests_running": 0.0,
+      "vllm:num_requests_waiting": 0.0,
+      "vllm:num_requests_waiting_by_reason": 0.0,
+      "vllm:engine_sleep_state": 1.0,
+      "vllm:kv_cache_usage_perc": 0.0,
+      "vllm:prefix_cache_queries_total": 0.0,
+      "vllm:prefix_cache_queries_created": 1795204526.2155282,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:prefix_cache_hits_created": 1795204526.2155402,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_queries_created": 1795204526.2155523,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_hits_created": 1795204526.2155657,
+      "vllm:mm_cache_queries_total": 0.0,
+      "vllm:mm_cache_queries_created": 1795204526.2155764,
+      "vllm:mm_cache_hits_total": 0.0,
+      "vllm:mm_cache_hits_created": 1795204526.2155879,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:num_preemptions_created": 1795204526.2157214,
+      "vllm:prompt_tokens_total": 0.0,
+      "vllm:prompt_tokens_created": 1795204526.2157338,
+      "vllm:prompt_tokens_by_source_total": 0.0,
+      "vllm:prompt_tokens_by_source_created": 5385613578.647261,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:prompt_tokens_cached_created": 1795204526.215769,
+      "vllm:prompt_tokens_cached_by_source_total": 0.0,
+      "vllm:prompt_tokens_cached_by_source_created": 8976022631.079035,
+      "vllm:generation_tokens_total": 0.0,
+      "vllm:generation_tokens_created": 1795204526.2158322,
+      "vllm:request_success_total": 0.0,
+      "vllm:request_success_created": 8976022631.079311,
+      "vllm:admission_rejections_total": 0.0,
+      "vllm:admission_rejections_created": 3590409052.4318047,
+      "vllm:request_prompt_tokens_bucket": 0.0,
+      "vllm:request_prompt_tokens_count": 0.0,
+      "vllm:request_prompt_tokens_sum": 0.0,
+      "vllm:request_prompt_tokens_created": 1795204526.2159367,
+      "vllm:request_generation_tokens_bucket": 0.0,
+      "vllm:request_generation_tokens_count": 0.0,
+      "vllm:request_generation_tokens_sum": 0.0,
+      "vllm:request_generation_tokens_created": 1795204526.2159846,
+      "vllm:iteration_tokens_total_bucket": 0.0,
+      "vllm:iteration_tokens_total_count": 0.0,
+      "vllm:iteration_tokens_total_sum": 0.0,
+      "vllm:iteration_tokens_total_created": 1795204526.216015,
+      "vllm:request_max_num_generation_tokens_bucket": 0.0,
+      "vllm:request_max_num_generation_tokens_count": 0.0,
+      "vllm:request_max_num_generation_tokens_sum": 0.0,
+      "vllm:request_max_num_generation_tokens_created": 1795204526.216042,
+      "vllm:request_params_n_bucket": 0.0,
+      "vllm:request_params_n_count": 0.0,
+      "vllm:request_params_n_sum": 0.0,
+      "vllm:request_params_n_created": 1795204526.2160683,
+      "vllm:request_params_max_tokens_bucket": 0.0,
+      "vllm:request_params_max_tokens_count": 0.0,
+      "vllm:request_params_max_tokens_sum": 0.0,
+      "vllm:request_params_max_tokens_created": 1795204526.216087,
+      "vllm:time_to_first_token_seconds_bucket": 0.0,
+      "vllm:time_to_first_token_seconds_count": 0.0,
+      "vllm:time_to_first_token_seconds_sum": 0.0,
+      "vllm:time_to_first_token_seconds_created": 1795204526.2161148,
+      "vllm:inter_token_latency_seconds_bucket": 0.0,
+      "vllm:inter_token_latency_seconds_count": 0.0,
+      "vllm:inter_token_latency_seconds_sum": 0.0,
+      "vllm:inter_token_latency_seconds_created": 1795204526.2161517,
+      "vllm:request_time_per_output_token_seconds_bucket": 0.0,
+      "vllm:request_time_per_output_token_seconds_count": 0.0,
+      "vllm:request_time_per_output_token_seconds_sum": 0.0,
+      "vllm:request_time_per_output_token_seconds_created": 1795204526.2161815,
+      "vllm:e2e_request_latency_seconds_bucket": 0.0,
+      "vllm:e2e_request_latency_seconds_count": 0.0,
+      "vllm:e2e_request_latency_seconds_sum": 0.0,
+      "vllm:e2e_request_latency_seconds_created": 1795204526.2162101,
+      "vllm:request_queue_time_seconds_bucket": 0.0,
+      "vllm:request_queue_time_seconds_count": 0.0,
+      "vllm:request_queue_time_seconds_sum": 0.0,
+      "vllm:request_queue_time_seconds_created": 1795204526.2162404,
+      "vllm:request_inference_time_seconds_bucket": 0.0,
+      "vllm:request_inference_time_seconds_count": 0.0,
+      "vllm:request_inference_time_seconds_sum": 0.0,
+      "vllm:request_inference_time_seconds_created": 1795204526.2162778,
+      "vllm:request_prefill_time_seconds_bucket": 0.0,
+      "vllm:request_prefill_time_seconds_count": 0.0,
+      "vllm:request_prefill_time_seconds_sum": 0.0,
+      "vllm:request_prefill_time_seconds_created": 1795204526.216338,
+      "vllm:request_decode_time_seconds_bucket": 0.0,
+      "vllm:request_decode_time_seconds_count": 0.0,
+      "vllm:request_decode_time_seconds_sum": 0.0,
+      "vllm:request_decode_time_seconds_created": 1795204526.216368,
+      "vllm:request_num_preemptions_bucket": 0.0,
+      "vllm:request_num_preemptions_count": 0.0,
+      "vllm:request_num_preemptions_sum": 0.0,
+      "vllm:request_num_preemptions_created": 1795204526.216395,
+      "vllm:request_prefill_kv_computed_tokens_bucket": 0.0,
+      "vllm:request_prefill_kv_computed_tokens_count": 0.0,
+      "vllm:request_prefill_kv_computed_tokens_sum": 0.0,
+      "vllm:request_prefill_kv_computed_tokens_created": 1795204526.2164147,
+      "vllm:cache_config_info": 1.0,
+      "http_requests_total": 1.0,
+      "http_requests_created": 1795204530.1176507,
+      "http_request_size_bytes_count": 1.0,
+      "http_request_size_bytes_sum": 0.0,
+      "http_request_size_bytes_created": 1795204530.1176748,
+      "http_response_size_bytes_count": 1.0,
+      "http_response_size_bytes_sum": 470.0,
+      "http_response_size_bytes_created": 1795204530.117692,
+      "http_request_duration_highr_seconds_bucket": 22.0,
+      "http_request_duration_highr_seconds_count": 1.0,
+      "http_request_duration_highr_seconds_sum": 0.0005133780000505794,
+      "http_request_duration_highr_seconds_created": 1795204526.3252351,
+      "http_request_duration_seconds_bucket": 4.0,
+      "http_request_duration_seconds_count": 1.0,
+      "http_request_duration_seconds_sum": 0.0005133780000505794,
+      "http_request_duration_seconds_created": 1795204530.1177213
+    },
+    "run_metrics_end": {
+      "python_gc_objects_collected_total": 19044.0,
+      "python_gc_objects_uncollectable_total": 0.0,
+      "python_gc_collections_total": 2402.0,
+      "python_info": 1.0,
+      "process_virtual_memory_bytes": 11745669120.0,
+      "process_resident_memory_bytes": 1497800704.0,
+      "process_start_time_seconds": 1795204489.66,
+      "process_cpu_seconds_total": 23.55,
+      "process_open_fds": 47.0,
+      "process_max_fds": 65535.0,
+      "vllm:estimated_flops_per_gpu_total": 0.0,
+      "vllm:estimated_flops_per_gpu_created": 1795204526.2153463,
+      "vllm:estimated_read_bytes_per_gpu_total": 0.0,
+      "vllm:estimated_read_bytes_per_gpu_created": 1795204526.2153702,
+      "vllm:estimated_write_bytes_per_gpu_total": 0.0,
+      "vllm:estimated_write_bytes_per_gpu_created": 1795204526.2153838,
+      "vllm:num_requests_running": 0.0,
+      "vllm:num_requests_waiting": 0.0,
+      "vllm:num_requests_waiting_by_reason": 0.0,
+      "vllm:engine_sleep_state": 1.0,
+      "vllm:kv_cache_usage_perc": 0.0,
+      "vllm:prefix_cache_queries_total": 2060076.0,
+      "vllm:prefix_cache_queries_created": 1795204526.2155282,
+      "vllm:prefix_cache_hits_total": 325328.0,
+      "vllm:prefix_cache_hits_created": 1795204526.2155402,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_queries_created": 1795204526.2155523,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_hits_created": 1795204526.2155657,
+      "vllm:mm_cache_queries_total": 0.0,
+      "vllm:mm_cache_queries_created": 1795204526.2155764,
+      "vllm:mm_cache_hits_total": 0.0,
+      "vllm:mm_cache_hits_created": 1795204526.2155879,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:num_preemptions_created": 1795204526.2157214,
+      "vllm:prompt_tokens_total": 2060076.0,
+      "vllm:prompt_tokens_created": 1795204526.2157338,
+      "vllm:prompt_tokens_by_source_total": 2060076.0,
+      "vllm:prompt_tokens_by_source_created": 5385613578.647261,
+      "vllm:prompt_tokens_cached_total": 325328.0,
+      "vllm:prompt_tokens_cached_created": 1795204526.215769,
+      "vllm:prompt_tokens_cached_by_source_total": 325328.0,
+      "vllm:prompt_tokens_cached_by_source_created": 8976022631.079035,
+      "vllm:generation_tokens_total": 24885.0,
+      "vllm:generation_tokens_created": 1795204526.2158322,
+      "vllm:request_success_total": 330.0,
+      "vllm:request_success_created": 8976022631.079311,
+      "vllm:admission_rejections_total": 0.0,
+      "vllm:admission_rejections_created": 3590409052.4318047,
+      "vllm:request_prompt_tokens_bucket": 990.0,
+      "vllm:request_prompt_tokens_count": 330.0,
+      "vllm:request_prompt_tokens_sum": 2060076.0,
+      "vllm:request_prompt_tokens_created": 1795204526.2159367,
+      "vllm:request_generation_tokens_bucket": 3322.0,
+      "vllm:request_generation_tokens_count": 330.0,
+      "vllm:request_generation_tokens_sum": 24885.0,
+      "vllm:request_generation_tokens_created": 1795204526.2159846,
+      "vllm:iteration_tokens_total_bucket": 344815.0,
+      "vllm:iteration_tokens_total_count": 24885.0,
+      "vllm:iteration_tokens_total_sum": 1759633.0,
+      "vllm:iteration_tokens_total_created": 1795204526.216015,
+      "vllm:request_max_num_generation_tokens_bucket": 3322.0,
+      "vllm:request_max_num_generation_tokens_count": 330.0,
+      "vllm:request_max_num_generation_tokens_sum": 24885.0,
+      "vllm:request_max_num_generation_tokens_created": 1795204526.216042,
+      "vllm:request_params_n_bucket": 1980.0,
+      "vllm:request_params_n_count": 330.0,
+      "vllm:request_params_n_sum": 330.0,
+      "vllm:request_params_n_created": 1795204526.2160683,
+      "vllm:request_params_max_tokens_bucket": 2970.0,
+      "vllm:request_params_max_tokens_count": 330.0,
+      "vllm:request_params_max_tokens_sum": 85800.0,
+      "vllm:request_params_max_tokens_created": 1795204526.216087,
+      "vllm:time_to_first_token_seconds_bucket": 5936.0,
+      "vllm:time_to_first_token_seconds_count": 330.0,
+      "vllm:time_to_first_token_seconds_sum": 15.16738247871399,
+      "vllm:time_to_first_token_seconds_created": 1795204526.2161148,
+      "vllm:inter_token_latency_seconds_bucket": 491100.0,
+      "vllm:inter_token_latency_seconds_count": 24555.0,
+      "vllm:inter_token_latency_seconds_sum": 55.50486055399597,
+      "vllm:inter_token_latency_seconds_created": 1795204526.2161517,
+      "vllm:request_time_per_output_token_seconds_bucket": 6600.0,
+      "vllm:request_time_per_output_token_seconds_count": 330.0,
+      "vllm:request_time_per_output_token_seconds_sum": 0.7299732033864252,
+      "vllm:request_time_per_output_token_seconds_created": 1795204526.2161815,
+      "vllm:e2e_request_latency_seconds_bucket": 7102.0,
+      "vllm:e2e_request_latency_seconds_count": 330.0,
+      "vllm:e2e_request_latency_seconds_sum": 70.59360456466675,
+      "vllm:e2e_request_latency_seconds_created": 1795204526.2162101,
+      "vllm:request_queue_time_seconds_bucket": 7260.0,
+      "vllm:request_queue_time_seconds_count": 330.0,
+      "vllm:request_queue_time_seconds_sum": 0.004470974997730082,
+      "vllm:request_queue_time_seconds_created": 1795204526.2162404,
+      "vllm:request_inference_time_seconds_bucket": 7112.0,
+      "vllm:request_inference_time_seconds_count": 330.0,
+      "vllm:request_inference_time_seconds_sum": 67.401128539002,
+      "vllm:request_inference_time_seconds_created": 1795204526.2162778,
+      "vllm:request_prefill_time_seconds_bucket": 7260.0,
+      "vllm:request_prefill_time_seconds_count": 330.0,
+      "vllm:request_prefill_time_seconds_sum": 11.896267985006034,
+      "vllm:request_prefill_time_seconds_created": 1795204526.216338,
+      "vllm:request_decode_time_seconds_bucket": 7150.0,
+      "vllm:request_decode_time_seconds_count": 330.0,
+      "vllm:request_decode_time_seconds_sum": 55.50486055399597,
+      "vllm:request_decode_time_seconds_created": 1795204526.216368,
+      "vllm:request_num_preemptions_bucket": 2640.0,
+      "vllm:request_num_preemptions_count": 330.0,
+      "vllm:request_num_preemptions_sum": 0.0,
+      "vllm:request_num_preemptions_created": 1795204526.216395,
+      "vllm:request_prefill_kv_computed_tokens_bucket": 1045.0,
+      "vllm:request_prefill_kv_computed_tokens_count": 330.0,
+      "vllm:request_prefill_kv_computed_tokens_sum": 1734748.0,
+      "vllm:request_prefill_kv_computed_tokens_created": 1795204526.2164147,
+      "vllm:cache_config_info": 1.0,
+      "http_requests_total": 331.0,
+      "http_requests_created": 3590409061.952931,
+      "http_request_size_bytes_count": 331.0,
+      "http_request_size_bytes_sum": 9603547.0,
+      "http_request_size_bytes_created": 3590409061.9529705,
+      "http_response_size_bytes_count": 331.0,
+      "http_response_size_bytes_sum": 132448.0,
+      "http_response_size_bytes_created": 3590409061.953002,
+      "http_request_duration_highr_seconds_bucket": 5809.0,
+      "http_request_duration_highr_seconds_count": 331.0,
+      "http_request_duration_highr_seconds_sum": 70.8586817190021,
+      "http_request_duration_highr_seconds_created": 1795204526.3252351,
+      "http_request_duration_seconds_bucket": 1156.0,
+      "http_request_duration_seconds_count": 331.0,
+      "http_request_duration_seconds_sum": 70.8586817190021,
+      "http_request_duration_seconds_created": 3590409061.9530516,
+      "vllm:request_render_duration_seconds_bucket": 3579.0,
+      "vllm:request_render_duration_seconds_count": 330.0,
+      "vllm:request_render_duration_seconds_sum": 2.591302140002881,
+      "vllm:request_render_duration_seconds_created": 1795204531.7797751
+    }
+  },
+  "arms": {
+    "append_only": {
+      "n_requests": 50,
+      "metrics": {
+        "total_input_tokens": {
+          "n": 50,
+          "mean": 7761.6,
+          "median": 7761.0,
+          "p95": 7785.0,
+          "std": 9.037337516534121,
+          "min": 7749.0,
+          "max": 7785.0
+        },
+        "cached_input_tokens_usage": {
+          "n": 50,
+          "mean": 5488.0,
+          "median": 5488.0,
+          "p95": 5488.0,
+          "std": 0.0,
+          "min": 5488.0,
+          "max": 5488.0
+        },
+        "cached_input_tokens_metrics": {
+          "n": 50,
+          "mean": 5488.0,
+          "median": 5488.0,
+          "p95": 5488.0,
+          "std": 0.0,
+          "min": 5488.0,
+          "max": 5488.0
+        },
+        "uncached_input_tokens_usage": {
+          "n": 50,
+          "mean": 2273.6,
+          "median": 2273.0,
+          "p95": 2297.0,
+          "std": 9.037337516534121,
+          "min": 2261.0,
+          "max": 2297.0
+        },
+        "uncached_input_tokens_metrics": {
+          "n": 50,
+          "mean": 2273.6,
+          "median": 2273.0,
+          "p95": 2297.0,
+          "std": 9.037337516534121,
+          "min": 2261.0,
+          "max": 2297.0
+        },
+        "ttft_ms": {
+          "n": 50,
+          "mean": 40.12362257998575,
+          "median": 39.244176000011066,
+          "p95": 44.42218569995475,
+          "std": 2.4327526485014372,
+          "min": 37.62163400006102,
+          "max": 49.78816399989228
+        },
+        "e2e_ms": {
+          "n": 50,
+          "mean": 369.2371358600212,
+          "median": 377.6461219999874,
+          "p95": 469.89088170009836,
+          "std": 109.00731931228206,
+          "min": 68.8909970003806,
+          "max": 503.3130199999505
+        },
+        "itl_ms": {
+          "n": 50,
+          "mean": 2.302574475400762,
+          "median": 2.3130817712158716,
+          "p95": 2.3436247732871087,
+          "std": 0.05329422918119852,
+          "min": 2.1028679230557126,
+          "max": 2.3457648076920714
+        },
+        "completion_tokens": {
+          "n": 50,
+          "mean": 142.82,
+          "median": 147.5,
+          "p95": 186.55,
+          "std": 46.676345449165105,
+          "min": 15.0,
+          "max": 199.0
+        }
+      },
+      "accuracy": {
+        "n": 50,
+        "correct": 42,
+        "accuracy_pct": 84.0
+      },
+      "cache_hit_fraction_usage": 0.7070716449470345,
+      "cache_hit_fraction_metrics": 0.7070716449470345
+    },
+    "rewrite_equal_tokens": {
+      "n_requests": 50,
+      "metrics": {
+        "total_input_tokens": {
+          "n": 50,
+          "mean": 7761.6,
+          "median": 7761.0,
+          "p95": 7785.0,
+          "std": 9.037337516534121,
+          "min": 7749.0,
+          "max": 7785.0
+        },
+        "cached_input_tokens_usage": {
+          "n": 50,
+          "mean": 212.8,
+          "median": 208.0,
+          "p95": 224.0,
+          "std": 7.406560798180411,
+          "min": 208.0,
+          "max": 224.0
+        },
+        "cached_input_tokens_metrics": {
+          "n": 50,
+          "mean": 212.8,
+          "median": 208.0,
+          "p95": 224.0,
+          "std": 7.406560798180411,
+          "min": 208.0,
+          "max": 224.0
+        },
+        "uncached_input_tokens_usage": {
+          "n": 50,
+          "mean": 7548.8,
+          "median": 7548.0,
+          "p95": 7577.0,
+          "std": 11.458888360088844,
+          "min": 7525.0,
+          "max": 7577.0
+        },
+        "uncached_input_tokens_metrics": {
+          "n": 50,
+          "mean": 7548.8,
+          "median": 7548.0,
+          "p95": 7577.0,
+          "std": 11.458888360088844,
+          "min": 7525.0,
+          "max": 7577.0
+        },
+        "ttft_ms": {
+          "n": 50,
+          "mean": 68.03782322001098,
+          "median": 67.29127150015302,
+          "p95": 73.3472117501151,
+          "std": 2.3637746090528573,
+          "min": 65.43247600029645,
+          "max": 75.57762399983403
+        },
+        "e2e_ms": {
+          "n": 50,
+          "mean": 359.74606627993126,
+          "median": 355.5444839996653,
+          "p95": 508.127082899955,
+          "std": 107.46290235310862,
+          "min": 97.17310299993187,
+          "max": 543.172702999982
+        },
+        "itl_ms": {
+          "n": 50,
+          "mean": 2.2863404408678965,
+          "median": 2.3017667827866344,
+          "p95": 2.3365057564133025,
+          "std": 0.06485484070317947,
+          "min": 2.0446782499827045,
+          "max": 2.339160645567949
+        },
+        "completion_tokens": {
+          "n": 50,
+          "mean": 127.34,
+          "median": 127.0,
+          "p95": 190.0,
+          "std": 46.13184742603286,
+          "min": 15.0,
+          "max": 205.0
+        }
+      },
+      "accuracy": {
+        "n": 50,
+        "correct": 37,
+        "accuracy_pct": 74.0
+      },
+      "cache_hit_fraction_usage": 0.027417021014974834,
+      "cache_hit_fraction_metrics": 0.027417021014974834
+    },
+    "rewrite_shorter_prompt": {
+      "n_requests": 50,
+      "metrics": {
+        "total_input_tokens": {
+          "n": 50,
+          "mean": 5433.1,
+          "median": 5433.0,
+          "p95": 5450.0,
+          "std": 6.5690989659533825,
+          "min": 5424.0,
+          "max": 5450.0
+        },
+        "cached_input_tokens_usage": {
+          "n": 50,
+          "mean": 213.76,
+          "median": 208.0,
+          "p95": 224.0,
+          "std": 7.757971542160979,
+          "min": 208.0,
+          "max": 224.0
+        },
+        "cached_input_tokens_metrics": {
+          "n": 50,
+          "mean": 213.76,
+          "median": 208.0,
+          "p95": 224.0,
+          "std": 7.757971542160979,
+          "min": 208.0,
+          "max": 224.0
+        },
+        "uncached_input_tokens_usage": {
+          "n": 50,
+          "mean": 5219.34,
+          "median": 5220.0,
+          "p95": 5235.25,
+          "std": 8.853939512892506,
+          "min": 5205.0,
+          "max": 5242.0
+        },
+        "uncached_input_tokens_metrics": {
+          "n": 50,
+          "mean": 5219.34,
+          "median": 5220.0,
+          "p95": 5235.25,
+          "std": 8.853939512892506,
+          "min": 5205.0,
+          "max": 5242.0
+        },
+        "ttft_ms": {
+          "n": 50,
+          "mean": 43.88730056000895,
+          "median": 43.17712800002482,
+          "p95": 47.437064699897746,
+          "std": 1.9459739717143063,
+          "min": 41.39576300030967,
+          "max": 49.92623899988757
+        },
+        "e2e_ms": {
+          "n": 50,
+          "mean": 381.70794990001923,
+          "median": 373.944164500017,
+          "p95": 528.0599149500404,
+          "std": 76.07356117950096,
+          "min": 279.22152599967376,
+          "max": 556.861924000259
+        },
+        "itl_ms": {
+          "n": 50,
+          "mean": 2.1363206443752962,
+          "median": 2.136048174345575,
+          "p95": 2.1552038628966352,
+          "std": 0.012570441167656456,
+          "min": 2.109622895350079,
+          "max": 2.159766659482212
+        },
+        "completion_tokens": {
+          "n": 50,
+          "mean": 158.92,
+          "median": 154.5,
+          "p95": 226.75,
+          "std": 35.513055949286354,
+          "min": 108.0,
+          "max": 242.0
+        }
+      },
+      "accuracy": {
+        "n": 50,
+        "correct": 40,
+        "accuracy_pct": 80.0
+      },
+      "cache_hit_fraction_usage": 0.03934366279016503,
+      "cache_hit_fraction_metrics": 0.03934366279016503
+    }
+  },
+  "paired": {
+    "rewrite_equal_tokens_vs_append_only": {
+      "pairs": 50,
+      "metrics": {
+        "total_input_tokens": {
+          "delta": {
+            "n": 50,
+            "mean": 0.0,
+            "median": 0.0,
+            "p95": 0.0,
+            "std": 0.0,
+            "min": 0.0,
+            "max": 0.0
+          },
+          "delta_mean_95ci": [
+            0.0,
+            0.0
+          ],
+          "ratio": {
+            "n": 50,
+            "mean": 1.0,
+            "median": 1.0,
+            "p95": 1.0,
+            "std": 0.0,
+            "min": 1.0,
+            "max": 1.0
+          }
+        },
+        "cached_input_tokens_usage": {
+          "delta": {
+            "n": 50,
+            "mean": -5275.2,
+            "median": -5280.0,
+            "p95": -5264.0,
+            "std": 7.406560798180411,
+            "min": -5280.0,
+            "max": -5264.0
+          },
+          "delta_mean_95ci": [
+            -5277.12,
+            -5272.96
+          ],
+          "ratio": {
+            "n": 50,
+            "mean": 0.03877551020408163,
+            "median": 0.037900874635568516,
+            "p95": 0.04081632653061224,
+            "std": 0.0013495919821757284,
+            "min": 0.037900874635568516,
+            "max": 0.04081632653061224
+          }
+        },
+        "uncached_input_tokens_usage": {
+          "delta": {
+            "n": 50,
+            "mean": 5275.2,
+            "median": 5280.0,
+            "p95": 5280.0,
+            "std": 7.406560798180411,
+            "min": 5264.0,
+            "max": 5280.0
+          },
+          "delta_mean_95ci": [
+            5272.96,
+            5277.12
+          ],
+          "ratio": {
+            "n": 50,
+            "mean": 3.3202332743193876,
+            "median": 3.3219556025246946,
+            "p95": 3.335249889429456,
+            "std": 0.009857130991468633,
+            "min": 3.2916848062690467,
+            "max": 3.335249889429456
+          }
+        },
+        "uncached_input_tokens_metrics": {
+          "delta": {
+            "n": 50,
+            "mean": 5275.2,
+            "median": 5280.0,
+            "p95": 5280.0,
+            "std": 7.406560798180411,
+            "min": 5264.0,
+            "max": 5280.0
+          },
+          "delta_mean_95ci": [
+            5272.96,
+            5277.12
+          ],
+          "ratio": {
+            "n": 50,
+            "mean": 3.3202332743193876,
+            "median": 3.3219556025246946,
+            "p95": 3.335249889429456,
+            "std": 0.009857130991468633,
+            "min": 3.2916848062690467,
+            "max": 3.335249889429456
+          }
+        },
+        "ttft_ms": {
+          "delta": {
+            "n": 50,
+            "mean": 27.91420064002523,
+            "median": 28.12554099978115,
+            "p95": 31.269840900017694,
+            "std": 2.4493497525577497,
+            "min": 18.438045000038983,
+            "max": 33.0571620002047
+          },
+          "delta_mean_95ci": [
+            27.19717021102224,
+            28.55108795303272
+          ],
+          "ratio": {
+            "n": 50,
+            "mean": 1.699710299832836,
+            "median": 1.7150218768154635,
+            "p95": 1.7922005438484532,
+            "std": 0.0827838335532585,
+            "min": 1.370329884027836,
+            "max": 1.8492817492481401
+          }
+        },
+        "e2e_ms": {
+          "delta": {
+            "n": 50,
+            "mean": -9.49106958008997,
+            "median": -8.825246000014886,
+            "p95": 91.42905829974096,
+            "std": 63.114113770368895,
+            "min": -140.40669199994227,
+            "max": 174.53039399970294
+          },
+          "delta_mean_95ci": [
+            -26.68487720764915,
+            8.353030323882647
+          ],
+          "ratio": {
+            "n": 50,
+            "mean": 1.0150795997038062,
+            "median": 0.9786283499492328,
+            "p95": 1.4144274200165277,
+            "std": 0.20361629164344194,
+            "min": 0.7000510115424418,
+            "max": 1.5023151906119634
+          }
+        }
+      }
+    },
+    "rewrite_shorter_prompt_vs_append_only": {
+      "pairs": 50,
+      "metrics": {
+        "total_input_tokens": {
+          "delta": {
+            "n": 50,
+            "mean": -2328.5,
+            "median": -2328.0,
+            "p95": -2325.0,
+            "std": 2.484646732989441,
+            "min": -2335.0,
+            "max": -2325.0
+          },
+          "delta_mean_95ci": [
+            -2329.2,
+            -2327.84
+          ],
+          "ratio": {
+            "n": 50,
+            "mean": 0.6999973881956258,
+            "median": 0.6999999867148439,
+            "p95": 0.7000642260757868,
+            "std": 4.3850010962068705e-05,
+            "min": 0.6999355254674403,
+            "max": 0.7000642260757868
+          }
+        },
+        "cached_input_tokens_usage": {
+          "delta": {
+            "n": 50,
+            "mean": -5274.24,
+            "median": -5280.0,
+            "p95": -5264.0,
+            "std": 7.757971542160979,
+            "min": -5280.0,
+            "max": -5264.0
+          },
+          "delta_mean_95ci": [
+            -5276.168,
+            -5272.0
+          ],
+          "ratio": {
+            "n": 50,
+            "mean": 0.038950437317784255,
+            "median": 0.037900874635568516,
+            "p95": 0.04081632653061224,
+            "std": 0.0014136245521430325,
+            "min": 0.037900874635568516,
+            "max": 0.04081632653061224
+          }
+        },
+        "uncached_input_tokens_usage": {
+          "delta": {
+            "n": 50,
+            "mean": 2945.74,
+            "median": 2951.0,
+            "p95": 2955.0,
+            "std": 8.651554065894869,
+            "min": 2929.0,
+            "max": 2955.0
+          },
+          "delta_mean_95ci": [
+            2943.38,
+            2948.08
+          ],
+          "ratio": {
+            "n": 50,
+            "mean": 2.2956554164446095,
+            "median": 2.297713280562885,
+            "p95": 2.3069438301636445,
+            "std": 0.007757617075978342,
+            "min": 2.2751414888985635,
+            "max": 2.3069438301636445
+          }
+        },
+        "uncached_input_tokens_metrics": {
+          "delta": {
+            "n": 50,
+            "mean": 2945.74,
+            "median": 2951.0,
+            "p95": 2955.0,
+            "std": 8.651554065894869,
+            "min": 2929.0,
+            "max": 2955.0
+          },
+          "delta_mean_95ci": [
+            2943.38,
+            2948.08
+          ],
+          "ratio": {
+            "n": 50,
+            "mean": 2.2956554164446095,
+            "median": 2.297713280562885,
+            "p95": 2.3069438301636445,
+            "std": 0.007757617075978342,
+            "min": 2.2751414888985635,
+            "max": 2.3069438301636445
+          }
+        },
+        "ttft_ms": {
+          "delta": {
+            "n": 50,
+            "mean": 3.7636779800232034,
+            "median": 3.8683305001541157,
+            "p95": 6.686444500201105,
+            "std": 2.1596874016181453,
+            "min": -5.717210000057094,
+            "max": 7.7512789998763765
+          },
+          "delta_mean_95ci": [
+            3.098168332051273,
+            4.305241602981596
+          ],
+          "ratio": {
+            "n": 50,
+            "mean": 1.095955954285472,
+            "median": 1.099017900176103,
+            "p95": 1.1741926501417403,
+            "std": 0.05320393193903168,
+            "min": 0.8851692944518006,
+            "max": 1.2035991118829028
+          }
+        },
+        "e2e_ms": {
+          "delta": {
+            "n": 50,
+            "mean": 12.470814039998004,
+            "median": -27.130602000170256,
+            "p95": 407.01961540007676,
+            "std": 147.76524520345342,
+            "min": -155.22391400008928,
+            "max": 477.140629999667
+          },
+          "delta_mean_95ci": [
+            -25.08696709949004,
+            56.12368643601457
+          ],
+          "ratio": {
+            "n": 50,
+            "mean": 1.4927107730697242,
+            "median": 0.930928940914289,
+            "p95": 6.714858647517604,
+            "std": 1.7564620455623676,
+            "min": 0.6684773415828151,
+            "max": 7.9260230040948745
+          }
+        }
+      }
+    },
+    "accuracy_pairwise": {
+      "pairs": 50,
+      "all_three_correct_pct": 66.0,
+      "per_arm_pct": {
+        "append_only": 84.0,
+        "rewrite_equal_tokens": 74.0,
+        "rewrite_shorter_prompt": 80.0
+      }
+    }
+  },
+  "derived": {
+    "regression_ttft_vs_uncached": {
+      "n": 150,
+      "slope_ms_per_1k_uncached_tokens": 5.118127646798202,
+      "intercept_ms": 25.02106700335173,
+      "r2": 0.7726833458684939
+    },
+    "means": {
+      "total_tokens_A": 7761.6,
+      "total_tokens_B": 7761.6,
+      "total_tokens_C": 5433.1,
+      "uncached_tokens_A": 2273.6,
+      "uncached_tokens_B": 7548.8,
+      "uncached_tokens_C": 5219.34,
+      "cached_tokens_A": 5488.0,
+      "cached_tokens_B": 212.8,
+      "cached_tokens_C": 213.76,
+      "ttft_ms_A": 40.12362257998575,
+      "ttft_ms_B": 68.03782322001098,
+      "ttft_ms_C": 43.88730056000895
+    },
+    "cached_prefix_after_rewrite_tokens": 213.28,
+    "break_even": {
+      "ratio_of_A_total": 0.32040816326530613,
+      "absolute_total_tokens": 2486.88,
+      "formula": "r* = (uncached_A + cached_after_rewrite) / total_A"
+    },
+    "shorter_prompt_paradox": {
+      "total_token_reduction_pct_C_vs_A": 30.0002576788291,
+      "ttft_change_pct_C_vs_A": 9.380204822035632,
+      "uncached_token_ratio_C_vs_A": 2.2956280788177343,
+      "cached_token_ratio_C_vs_A": 0.038950437317784255
+    },
+    "cache_invalidation_cost": {
+      "ttft_delta_B_minus_A_ms": 27.91420064002523,
+      "uncached_delta_B_minus_A": 5275.200000000001,
+      "predicted_from_slope_ms": 26.999146962389876,
+      "residual_ms": 0.9150536776353526
+    }
+  },
+  "checks": {
+    "measured_requests": 150,
+    "expected_measured_requests": 150,
+    "samples": 50,
+    "parity_max_abs_diff": 0.0,
+    "parity_mean_abs_diff": 0.0,
+    "shorter_ratio_min": 0.6999355254674403,
+    "shorter_ratio_max": 0.7000642260757868,
+    "shorter_ratio_mean": 0.6999973881956258,
+    "prime_tokens_a_mean": 5500.0,
+    "cache_hit_fraction_usage_A": 0.7070716449470345,
+    "cache_hit_fraction_usage_B": 0.027417021014974834,
+    "cache_hit_fraction_usage_C": 0.03934366279016503,
+    "append_only_high_cache_hit": true,
+    "rewrite_low_cache_hit": true,
+    "cached_usage_vs_metrics_mean_abs_diff": 0.0,
+    "cached_usage_vs_metrics_correlation": 1.0,
+    "tokenizer_vs_usage_mean_abs_delta": 0.0,
+    "accuracy_pct": {
+      "append_only": 84.0,
+      "rewrite_equal_tokens": 74.0,
+      "rewrite_shorter_prompt": 80.0
+    },
+    "all_arms_evidence_accurate_100pct": false,
+    "shorter_prompt_C_has_more_uncached_than_A": true,
+    "shorter_prompt_C_ttft_slower_than_A": true,
+    "parity_enforced": true,
+    "shorter_ratio_in_band": true
+  }
+}

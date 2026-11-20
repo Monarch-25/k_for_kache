@@ -1,0 +1,48 @@
+{
+  "captured_at": "2026-11-20T19:55:30.117902+00:00",
+  "serve_command": [
+    "/home/ubuntu/venv/bin/python",
+    "-m",
+    "vllm.entrypoints.openai.api_server",
+    "Qwen/Qwen2.5-14B-Instruct",
+    "--host",
+    "127.0.0.1",
+    "--port",
+    "8000",
+    "--served-model-name",
+    "Qwen2.5-14B-Instruct",
+    "--dtype",
+    "bfloat16",
+    "--max-model-len",
+    "32768",
+    "--gpu-memory-utilization",
+    "0.9",
+    "--enable-prefix-caching",
+    "--enable-prompt-tokens-details",
+    "--block-size",
+    "16"
+  ],
+  "server_reused": false,
+  "vllm_server": {
+    "host": "127.0.0.1",
+    "port": 8000,
+    "model": "Qwen/Qwen2.5-14B-Instruct",
+    "served_model_name": "Qwen2.5-14B-Instruct",
+    "dtype": "bfloat16",
+    "max_model_len": 32768,
+    "gpu_memory_utilization": 0.9,
+    "enable_prefix_caching": true,
+    "enable_prompt_tokens_details": true,
+    "block_size": 16,
+    "trust_remote_code": false,
+    "startup_timeout_s": 3600,
+    "request_timeout_s": 900,
+    "extra_args": [],
+    "hf_home": "/home/ubuntu/hf"
+  },
+  "versions": {
+    "vllm": "0.34.0",
+    "torch": "2.14.0",
+    "transformers": "5.22.2"
+  }
+}

@@ -1,0 +1,202 @@
+[init] loading tokenizer: Qwen/Qwen2.5-14B-Instruct
+[init] building scenarios
+[scenario] s01_pytest_timeout       tool_tokens=2192 field=timeout_ms
+[scenario] s02_worker_pool          tool_tokens=2182 field=worker_pool
+[scenario] s03_tls_error_code       tool_tokens=2197 field=error_code
+[scenario] s04_db_pool              tool_tokens=2216 field=db_pool_max
+[scenario] s05_k8s_probe            tool_tokens=2189 field=failure_threshold
+[scenario] s06_api_retry            tool_tokens=2186 field=retry_after_ms
+[scenario] s07_systemd_restart      tool_tokens=2193 field=restart_burst
+[scenario] s08_nginx_timeout        tool_tokens=2190 field=proxy_read_timeout_s
+[scenario] s09_cert_renewal         tool_tokens=2191 field=renew_before_days
+[scenario] s10_redis_eviction       tool_tokens=2195 field=maxmemory_policy
+[server] starting: /home/ubuntu/venv/bin/python -m vllm.entrypoints.openai.api_server Qwen/Qwen2.5-14B-Instruct --host 127.0.0.1 --port 8000 --served-model-name Qwen2.5-14B-Instruct --dtype bfloat16 --max-model-len 32768 --gpu-memory-utilization 0.9 --enable-prefix-caching --enable-prompt-tokens-details --block-size 16
+[server] log: /home/ubuntu/cache_test/cache_test/results/vllm_server.log
+[server] waiting for /health ... 0s | 
+[server] waiting for /health ... 30s | 2026-11-20 19:55:17,355 - INFO - autotuner.py:1146 - flashinfer.jit: [Autotuner]: Autotuning process ends
+[server] healthy after 40.0s
+[server] wrote /home/ubuntu/cache_test/cache_test/results/serve_config.json
+[bench] config: 10 scenarios x 5 reps x 3 arms
+[run] starting warmup
+[warmup] s01_pytest_timeout-r3 rewrite_shorter_prompt success=True
+[warmup] s01_pytest_timeout-r3 rewrite_equal_tokens success=True
+[warmup] s01_pytest_timeout-r3 append_only success=True
+[warmup] s01_pytest_timeout-r4 rewrite_shorter_prompt success=True
+[warmup] s01_pytest_timeout-r4 append_only success=True
+[warmup] s01_pytest_timeout-r4 rewrite_equal_tokens success=True
+[warmup] s01_pytest_timeout-r2 append_only success=True
+[warmup] s01_pytest_timeout-r2 rewrite_equal_tokens success=True
+[warmup] s01_pytest_timeout-r2 rewrite_shorter_prompt success=True
+[warmup] s01_pytest_timeout-r0 rewrite_equal_tokens success=True
+[warmup] s01_pytest_timeout-r0 append_only success=True
+[warmup] s01_pytest_timeout-r0 rewrite_shorter_prompt success=True
+[warmup] s01_pytest_timeout-r1 rewrite_shorter_prompt success=True
+[warmup] s01_pytest_timeout-r1 append_only success=True
+[warmup] s01_pytest_timeout-r1 rewrite_equal_tokens success=True
+[run] warmup complete
+[1/50] s07_systemd_restart-r1 append_only            total=7762.0 cached=5488.0 uncached=2274.0 ttft=38.9ms acc=True
+[1/50] s07_systemd_restart-r1 rewrite_equal_tokens   total=7762.0 cached=224.0 uncached=7538.0 ttft=67.2ms acc=True
+[1/50] s07_systemd_restart-r1 rewrite_shorter_prompt total=5433.0 cached=208.0 uncached=5225.0 ttft=46.4ms acc=True
+[2/50] s05_k8s_probe-r4 append_only            total=7756.0 cached=5488.0 uncached=2268.0 ttft=43.5ms acc=True
+[2/50] s05_k8s_probe-r4 rewrite_equal_tokens   total=7756.0 cached=208.0 uncached=7548.0 ttft=70.9ms acc=True
+[2/50] s05_k8s_probe-r4 rewrite_shorter_prompt total=5429.0 cached=224.0 uncached=5205.0 ttft=46.2ms acc=True
+[3/50] s10_redis_eviction-r1 rewrite_shorter_prompt total=5435.0 cached=224.0 uncached=5211.0 ttft=44.9ms acc=True
+[3/50] s10_redis_eviction-r1 rewrite_equal_tokens   total=7764.0 cached=224.0 uncached=7540.0 ttft=68.1ms acc=True
+[3/50] s10_redis_eviction-r1 append_only            total=7764.0 cached=5488.0 uncached=2276.0 ttft=38.7ms acc=True
+[4/50] s01_pytest_timeout-r2 append_only            total=7759.0 cached=5488.0 uncached=2271.0 ttft=40.5ms acc=True
+[4/50] s01_pytest_timeout-r2 rewrite_equal_tokens   total=7759.0 cached=224.0 uncached=7535.0 ttft=67.6ms acc=False
+[4/50] s01_pytest_timeout-r2 rewrite_shorter_prompt total=5431.0 cached=208.0 uncached=5223.0 ttft=42.1ms acc=False
+[5/50] s08_nginx_timeout-r3 append_only            total=7761.0 cached=5488.0 uncached=2273.0 ttft=38.8ms acc=True
+[5/50] s08_nginx_timeout-r3 rewrite_shorter_prompt total=5433.0 cached=224.0 uncached=5209.0 ttft=42.2ms acc=True
+[5/50] s08_nginx_timeout-r3 rewrite_equal_tokens   total=7761.0 cached=208.0 uncached=7553.0 ttft=67.0ms acc=True
+[6/50] s09_cert_renewal-r1 append_only            total=7761.0 cached=5488.0 uncached=2273.0 ttft=41.9ms acc=True
+[6/50] s09_cert_renewal-r1 rewrite_shorter_prompt total=5433.0 cached=208.0 uncached=5225.0 ttft=42.9ms acc=True
+[6/50] s09_cert_renewal-r1 rewrite_equal_tokens   total=7761.0 cached=224.0 uncached=7537.0 ttft=66.8ms acc=True
+[7/50] s06_api_retry-r0 rewrite_equal_tokens   total=7755.0 cached=208.0 uncached=7547.0 ttft=68.5ms acc=True
+[7/50] s06_api_retry-r0 rewrite_shorter_prompt total=5428.0 cached=208.0 uncached=5220.0 ttft=43.3ms acc=True
+[7/50] s06_api_retry-r0 append_only            total=7755.0 cached=5488.0 uncached=2267.0 ttft=38.9ms acc=False
+[8/50] s01_pytest_timeout-r0 rewrite_equal_tokens   total=7759.0 cached=224.0 uncached=7535.0 ttft=69.6ms acc=False
+[8/50] s01_pytest_timeout-r0 append_only            total=7759.0 cached=5488.0 uncached=2271.0 ttft=37.6ms acc=True
+[8/50] s01_pytest_timeout-r0 rewrite_shorter_prompt total=5431.0 cached=208.0 uncached=5223.0 ttft=42.3ms acc=False
+[9/50] s02_worker_pool-r4 rewrite_equal_tokens   total=7749.0 cached=208.0 uncached=7541.0 ttft=66.4ms acc=True
+[9/50] s02_worker_pool-r4 append_only            total=7749.0 cached=5488.0 uncached=2261.0 ttft=38.3ms acc=True
+[9/50] s02_worker_pool-r4 rewrite_shorter_prompt total=5424.0 cached=208.0 uncached=5216.0 ttft=42.1ms acc=True
+[10/50] s04_db_pool-r0 append_only            total=7785.0 cached=5488.0 uncached=2297.0 ttft=39.3ms acc=True
+[10/50] s04_db_pool-r0 rewrite_shorter_prompt total=5450.0 cached=224.0 uncached=5226.0 ttft=42.4ms acc=False
+[10/50] s04_db_pool-r0 rewrite_equal_tokens   total=7785.0 cached=208.0 uncached=7577.0 ttft=65.9ms acc=True
+[11/50] s02_worker_pool-r1 append_only            total=7749.0 cached=5488.0 uncached=2261.0 ttft=37.9ms acc=True
+[11/50] s02_worker_pool-r1 rewrite_equal_tokens   total=7749.0 cached=208.0 uncached=7541.0 ttft=65.8ms acc=True
+[11/50] s02_worker_pool-r1 rewrite_shorter_prompt total=5424.0 cached=208.0 uncached=5216.0 ttft=43.7ms acc=True
+[12/50] s05_k8s_probe-r0 rewrite_shorter_prompt total=5429.0 cached=208.0 uncached=5221.0 ttft=43.0ms acc=True
+[12/50] s05_k8s_probe-r0 append_only            total=7756.0 cached=5488.0 uncached=2268.0 ttft=41.4ms acc=True
+[12/50] s05_k8s_probe-r0 rewrite_equal_tokens   total=7756.0 cached=208.0 uncached=7548.0 ttft=66.1ms acc=True
+[13/50] s03_tls_error_code-r0 append_only            total=7764.0 cached=5488.0 uncached=2276.0 ttft=38.3ms acc=False
+[13/50] s03_tls_error_code-r0 rewrite_shorter_prompt total=5435.0 cached=208.0 uncached=5227.0 ttft=41.8ms acc=False
+[13/50] s03_tls_error_code-r0 rewrite_equal_tokens   total=7764.0 cached=224.0 uncached=7540.0 ttft=66.7ms acc=False
+[14/50] s03_tls_error_code-r3 rewrite_equal_tokens   total=7764.0 cached=208.0 uncached=7556.0 ttft=67.5ms acc=False
+[14/50] s03_tls_error_code-r3 rewrite_shorter_prompt total=5435.0 cached=208.0 uncached=5227.0 ttft=42.6ms acc=False
+[14/50] s03_tls_error_code-r3 append_only            total=7764.0 cached=5488.0 uncached=2276.0 ttft=38.3ms acc=False
+[15/50] s08_nginx_timeout-r2 append_only            total=7761.0 cached=5488.0 uncached=2273.0 ttft=39.6ms acc=True
+[15/50] s08_nginx_timeout-r2 rewrite_equal_tokens   total=7761.0 cached=208.0 uncached=7553.0 ttft=67.8ms acc=True
+[15/50] s08_nginx_timeout-r2 rewrite_shorter_prompt total=5433.0 cached=224.0 uncached=5209.0 ttft=43.5ms acc=True
+[16/50] s02_worker_pool-r2 append_only            total=7749.0 cached=5488.0 uncached=2261.0 ttft=39.6ms acc=True
+[16/50] s02_worker_pool-r2 rewrite_equal_tokens   total=7749.0 cached=208.0 uncached=7541.0 ttft=66.0ms acc=True
+[16/50] s02_worker_pool-r2 rewrite_shorter_prompt total=5424.0 cached=208.0 uncached=5216.0 ttft=42.5ms acc=True
+[17/50] s04_db_pool-r2 rewrite_equal_tokens   total=7785.0 cached=208.0 uncached=7577.0 ttft=67.2ms acc=True
+[17/50] s04_db_pool-r2 append_only            total=7785.0 cached=5488.0 uncached=2297.0 ttft=39.2ms acc=True
+[17/50] s04_db_pool-r2 rewrite_shorter_prompt total=5450.0 cached=208.0 uncached=5242.0 ttft=43.9ms acc=True
+[18/50] s10_redis_eviction-r2 append_only            total=7764.0 cached=5488.0 uncached=2276.0 ttft=39.2ms acc=True
+[18/50] s10_redis_eviction-r2 rewrite_shorter_prompt total=5435.0 cached=224.0 uncached=5211.0 ttft=43.8ms acc=True
+[18/50] s10_redis_eviction-r2 rewrite_equal_tokens   total=7764.0 cached=208.0 uncached=7556.0 ttft=68.5ms acc=True
+[19/50] s03_tls_error_code-r1 append_only            total=7764.0 cached=5488.0 uncached=2276.0 ttft=43.3ms acc=False
+[19/50] s03_tls_error_code-r1 rewrite_equal_tokens   total=7764.0 cached=224.0 uncached=7540.0 ttft=72.0ms acc=False
+[19/50] s03_tls_error_code-r1 rewrite_shorter_prompt total=5435.0 cached=224.0 uncached=5211.0 ttft=47.3ms acc=False
+[20/50] s07_systemd_restart-r4 rewrite_equal_tokens   total=7762.0 cached=224.0 uncached=7538.0 ttft=75.6ms acc=False
+[20/50] s07_systemd_restart-r4 append_only            total=7762.0 cached=5488.0 uncached=2274.0 ttft=44.9ms acc=True
+[20/50] s07_systemd_restart-r4 rewrite_shorter_prompt total=5433.0 cached=208.0 uncached=5225.0 ttft=49.9ms acc=True
+[21/50] s10_redis_eviction-r4 rewrite_equal_tokens   total=7764.0 cached=224.0 uncached=7540.0 ttft=75.3ms acc=False
+[21/50] s10_redis_eviction-r4 rewrite_shorter_prompt total=5435.0 cached=224.0 uncached=5211.0 ttft=46.5ms acc=True
+[21/50] s10_redis_eviction-r4 append_only            total=7764.0 cached=5488.0 uncached=2276.0 ttft=44.6ms acc=True
+[22/50] s08_nginx_timeout-r4 rewrite_shorter_prompt total=5433.0 cached=208.0 uncached=5225.0 ttft=46.4ms acc=True
+[22/50] s08_nginx_timeout-r4 rewrite_equal_tokens   total=7761.0 cached=208.0 uncached=7553.0 ttft=69.0ms acc=True
+[22/50] s08_nginx_timeout-r4 append_only            total=7761.0 cached=5488.0 uncached=2273.0 ttft=40.6ms acc=True
+[23/50] s08_nginx_timeout-r1 rewrite_equal_tokens   total=7761.0 cached=208.0 uncached=7553.0 ttft=69.1ms acc=False
+[23/50] s08_nginx_timeout-r1 append_only            total=7761.0 cached=5488.0 uncached=2273.0 ttft=39.7ms acc=True
+[23/50] s08_nginx_timeout-r1 rewrite_shorter_prompt total=5433.0 cached=208.0 uncached=5225.0 ttft=42.6ms acc=True
+[24/50] s05_k8s_probe-r3 rewrite_equal_tokens   total=7756.0 cached=208.0 uncached=7548.0 ttft=67.1ms acc=True
+[24/50] s05_k8s_probe-r3 append_only            total=7756.0 cached=5488.0 uncached=2268.0 ttft=44.2ms acc=True
+[24/50] s05_k8s_probe-r3 rewrite_shorter_prompt total=5429.0 cached=208.0 uncached=5221.0 ttft=47.6ms acc=True
+[25/50] s09_cert_renewal-r2 rewrite_shorter_prompt total=5433.0 cached=208.0 uncached=5225.0 ttft=46.3ms acc=True
+[25/50] s09_cert_renewal-r2 append_only            total=7761.0 cached=5488.0 uncached=2273.0 ttft=43.2ms acc=True
+[25/50] s09_cert_renewal-r2 rewrite_equal_tokens   total=7761.0 cached=224.0 uncached=7537.0 ttft=66.3ms acc=True
+[26/50] s02_worker_pool-r0 rewrite_equal_tokens   total=7749.0 cached=224.0 uncached=7525.0 ttft=66.5ms acc=True
+[26/50] s02_worker_pool-r0 rewrite_shorter_prompt total=5424.0 cached=208.0 uncached=5216.0 ttft=41.8ms acc=True
+[26/50] s02_worker_pool-r0 append_only            total=7749.0 cached=5488.0 uncached=2261.0 ttft=38.8ms acc=True
+[27/50] s01_pytest_timeout-r3 rewrite_shorter_prompt total=5431.0 cached=208.0 uncached=5223.0 ttft=43.3ms acc=False
+[27/50] s01_pytest_timeout-r3 rewrite_equal_tokens   total=7759.0 cached=208.0 uncached=7551.0 ttft=65.6ms acc=False
+[27/50] s01_pytest_timeout-r3 append_only            total=7759.0 cached=5488.0 uncached=2271.0 ttft=38.1ms acc=True
+[28/50] s02_worker_pool-r3 append_only            total=7749.0 cached=5488.0 uncached=2261.0 ttft=37.9ms acc=True
+[28/50] s02_worker_pool-r3 rewrite_equal_tokens   total=7749.0 cached=208.0 uncached=7541.0 ttft=65.8ms acc=True
+[28/50] s02_worker_pool-r3 rewrite_shorter_prompt total=5424.0 cached=208.0 uncached=5216.0 ttft=41.4ms acc=True
+[29/50] s01_pytest_timeout-r1 rewrite_shorter_prompt total=5431.0 cached=224.0 uncached=5207.0 ttft=42.0ms acc=True
+[29/50] s01_pytest_timeout-r1 append_only            total=7759.0 cached=5488.0 uncached=2271.0 ttft=38.7ms acc=True
+[29/50] s01_pytest_timeout-r1 rewrite_equal_tokens   total=7759.0 cached=208.0 uncached=7551.0 ttft=65.6ms acc=False
+[30/50] s05_k8s_probe-r2 append_only            total=7756.0 cached=5488.0 uncached=2268.0 ttft=38.0ms acc=True
+[30/50] s05_k8s_probe-r2 rewrite_shorter_prompt total=5429.0 cached=208.0 uncached=5221.0 ttft=42.7ms acc=True
+[30/50] s05_k8s_probe-r2 rewrite_equal_tokens   total=7756.0 cached=208.0 uncached=7548.0 ttft=65.9ms acc=True
+[31/50] s04_db_pool-r4 append_only            total=7785.0 cached=5488.0 uncached=2297.0 ttft=39.9ms acc=True
+[31/50] s04_db_pool-r4 rewrite_equal_tokens   total=7785.0 cached=208.0 uncached=7577.0 ttft=70.2ms acc=True
+[31/50] s04_db_pool-r4 rewrite_shorter_prompt total=5450.0 cached=208.0 uncached=5242.0 ttft=44.5ms acc=True
+[32/50] s07_systemd_restart-r0 append_only            total=7762.0 cached=5488.0 uncached=2274.0 ttft=39.1ms acc=True
+[32/50] s07_systemd_restart-r0 rewrite_equal_tokens   total=7762.0 cached=208.0 uncached=7554.0 ttft=67.2ms acc=True
+[32/50] s07_systemd_restart-r0 rewrite_shorter_prompt total=5433.0 cached=208.0 uncached=5225.0 ttft=42.9ms acc=True
+[33/50] s03_tls_error_code-r2 rewrite_shorter_prompt total=5435.0 cached=224.0 uncached=5211.0 ttft=42.8ms acc=False
+[33/50] s03_tls_error_code-r2 append_only            total=7764.0 cached=5488.0 uncached=2276.0 ttft=38.8ms acc=False
+[33/50] s03_tls_error_code-r2 rewrite_equal_tokens   total=7764.0 cached=224.0 uncached=7540.0 ttft=67.7ms acc=False
+[34/50] s04_db_pool-r1 rewrite_shorter_prompt total=5450.0 cached=208.0 uncached=5242.0 ttft=45.8ms acc=True
+[34/50] s04_db_pool-r1 rewrite_equal_tokens   total=7785.0 cached=208.0 uncached=7577.0 ttft=67.3ms acc=True
+[34/50] s04_db_pool-r1 append_only            total=7785.0 cached=5488.0 uncached=2297.0 ttft=38.1ms acc=True
+[35/50] s09_cert_renewal-r3 rewrite_shorter_prompt total=5433.0 cached=208.0 uncached=5225.0 ttft=42.3ms acc=True
+[35/50] s09_cert_renewal-r3 append_only            total=7761.0 cached=5488.0 uncached=2273.0 ttft=37.6ms acc=True
+[35/50] s09_cert_renewal-r3 rewrite_equal_tokens   total=7761.0 cached=208.0 uncached=7553.0 ttft=67.1ms acc=True
+[36/50] s09_cert_renewal-r0 append_only            total=7761.0 cached=5488.0 uncached=2273.0 ttft=40.6ms acc=True
+[36/50] s09_cert_renewal-r0 rewrite_equal_tokens   total=7761.0 cached=208.0 uncached=7553.0 ttft=66.7ms acc=True
+[36/50] s09_cert_renewal-r0 rewrite_shorter_prompt total=5433.0 cached=224.0 uncached=5209.0 ttft=41.9ms acc=True
+[37/50] s01_pytest_timeout-r4 rewrite_shorter_prompt total=5431.0 cached=224.0 uncached=5207.0 ttft=41.8ms acc=True
+[37/50] s01_pytest_timeout-r4 append_only            total=7759.0 cached=5488.0 uncached=2271.0 ttft=38.0ms acc=False
+[37/50] s01_pytest_timeout-r4 rewrite_equal_tokens   total=7759.0 cached=224.0 uncached=7535.0 ttft=66.4ms acc=False
+[38/50] s10_redis_eviction-r0 rewrite_shorter_prompt total=5435.0 cached=224.0 uncached=5211.0 ttft=43.1ms acc=True
+[38/50] s10_redis_eviction-r0 rewrite_equal_tokens   total=7764.0 cached=208.0 uncached=7556.0 ttft=68.0ms acc=True
+[38/50] s10_redis_eviction-r0 append_only            total=7764.0 cached=5488.0 uncached=2276.0 ttft=40.0ms acc=True
+[39/50] s06_api_retry-r2 rewrite_shorter_prompt total=5428.0 cached=208.0 uncached=5220.0 ttft=42.8ms acc=True
+[39/50] s06_api_retry-r2 append_only            total=7755.0 cached=5488.0 uncached=2267.0 ttft=38.6ms acc=True
+[39/50] s06_api_retry-r2 rewrite_equal_tokens   total=7755.0 cached=224.0 uncached=7531.0 ttft=65.4ms acc=True
+[40/50] s05_k8s_probe-r1 append_only            total=7756.0 cached=5488.0 uncached=2268.0 ttft=38.1ms acc=False
+[40/50] s05_k8s_probe-r1 rewrite_equal_tokens   total=7756.0 cached=208.0 uncached=7548.0 ttft=67.3ms acc=True
+[40/50] s05_k8s_probe-r1 rewrite_shorter_prompt total=5429.0 cached=208.0 uncached=5221.0 ttft=43.4ms acc=True
+[41/50] s08_nginx_timeout-r0 rewrite_shorter_prompt total=5433.0 cached=208.0 uncached=5225.0 ttft=45.3ms acc=True
+[41/50] s08_nginx_timeout-r0 append_only            total=7761.0 cached=5488.0 uncached=2273.0 ttft=41.4ms acc=True
+[41/50] s08_nginx_timeout-r0 rewrite_equal_tokens   total=7761.0 cached=208.0 uncached=7553.0 ttft=69.5ms acc=True
+[42/50] s09_cert_renewal-r4 rewrite_equal_tokens   total=7761.0 cached=208.0 uncached=7553.0 ttft=67.8ms acc=True
+[42/50] s09_cert_renewal-r4 append_only            total=7761.0 cached=5488.0 uncached=2273.0 ttft=40.4ms acc=True
+[42/50] s09_cert_renewal-r4 rewrite_shorter_prompt total=5433.0 cached=224.0 uncached=5209.0 ttft=42.5ms acc=True
+[43/50] s07_systemd_restart-r3 append_only            total=7762.0 cached=5488.0 uncached=2274.0 ttft=38.3ms acc=True
+[43/50] s07_systemd_restart-r3 rewrite_equal_tokens   total=7762.0 cached=208.0 uncached=7554.0 ttft=68.0ms acc=True
+[43/50] s07_systemd_restart-r3 rewrite_shorter_prompt total=5433.0 cached=224.0 uncached=5209.0 ttft=45.0ms acc=True
+[44/50] s06_api_retry-r4 append_only            total=7755.0 cached=5488.0 uncached=2267.0 ttft=42.0ms acc=True
+[44/50] s06_api_retry-r4 rewrite_equal_tokens   total=7755.0 cached=208.0 uncached=7547.0 ttft=71.6ms acc=True
+[44/50] s06_api_retry-r4 rewrite_shorter_prompt total=5428.0 cached=208.0 uncached=5220.0 ttft=47.5ms acc=True
+[45/50] s06_api_retry-r3 rewrite_equal_tokens   total=7755.0 cached=208.0 uncached=7547.0 ttft=67.3ms acc=True
+[45/50] s06_api_retry-r3 rewrite_shorter_prompt total=5428.0 cached=208.0 uncached=5220.0 ttft=42.8ms acc=True
+[45/50] s06_api_retry-r3 append_only            total=7755.0 cached=5488.0 uncached=2267.0 ttft=44.0ms acc=True
+[46/50] s03_tls_error_code-r4 rewrite_equal_tokens   total=7764.0 cached=208.0 uncached=7556.0 ttft=74.5ms acc=False
+[46/50] s03_tls_error_code-r4 append_only            total=7764.0 cached=5488.0 uncached=2276.0 ttft=41.4ms acc=False
+[46/50] s03_tls_error_code-r4 rewrite_shorter_prompt total=5435.0 cached=224.0 uncached=5211.0 ttft=46.7ms acc=False
+[47/50] s07_systemd_restart-r2 rewrite_shorter_prompt total=5433.0 cached=224.0 uncached=5209.0 ttft=45.1ms acc=True
+[47/50] s07_systemd_restart-r2 append_only            total=7762.0 cached=5488.0 uncached=2274.0 ttft=38.4ms acc=True
+[47/50] s07_systemd_restart-r2 rewrite_equal_tokens   total=7762.0 cached=208.0 uncached=7554.0 ttft=70.2ms acc=True
+[48/50] s10_redis_eviction-r3 append_only            total=7764.0 cached=5488.0 uncached=2276.0 ttft=39.5ms acc=True
+[48/50] s10_redis_eviction-r3 rewrite_equal_tokens   total=7764.0 cached=208.0 uncached=7556.0 ttft=67.0ms acc=True
+[48/50] s10_redis_eviction-r3 rewrite_shorter_prompt total=5435.0 cached=208.0 uncached=5227.0 ttft=42.7ms acc=True
+[49/50] s04_db_pool-r3 rewrite_shorter_prompt total=5450.0 cached=224.0 uncached=5226.0 ttft=44.1ms acc=False
+[49/50] s04_db_pool-r3 rewrite_equal_tokens   total=7785.0 cached=224.0 uncached=7561.0 ttft=68.2ms acc=True
+[49/50] s04_db_pool-r3 append_only            total=7785.0 cached=5488.0 uncached=2297.0 ttft=49.8ms acc=True
+[50/50] s06_api_retry-r1 append_only            total=7755.0 cached=5488.0 uncached=2267.0 ttft=40.1ms acc=True
+[50/50] s06_api_retry-r1 rewrite_shorter_prompt total=5428.0 cached=208.0 uncached=5220.0 ttft=43.7ms acc=True
+[50/50] s06_api_retry-r1 rewrite_equal_tokens   total=7755.0 cached=208.0 uncached=7547.0 ttft=66.8ms acc=True
+[run] raw records written to /home/ubuntu/cache_test/cache_test/results/raw_trials.jsonl
+[server] wrote /home/ubuntu/cache_test/cache_test/results/server_telemetry.json
+[analysis] wrote /home/ubuntu/cache_test/cache_test/results/summary_metrics.json
+[analysis] wrote /home/ubuntu/cache_test/cache_test/results/summary_metrics.csv
+[charts] wrote /home/ubuntu/cache_test/cache_test/results/ttft_comparison.png
+[charts] wrote /home/ubuntu/cache_test/cache_test/results/uncached_tokens_vs_ttft.png
+[charts] wrote /home/ubuntu/cache_test/cache_test/results/shorter_prompt_paradox.png
+
+=== HEADLINE ===
+A total=7762 cached=5488 uncached=2274 ttft=40.1ms
+B total=7762 cached=213 uncached=7549 ttft=68.0ms
+C total=5433 cached=214 uncached=5219 ttft=43.9ms
+accuracy: {'append_only': 84.0, 'rewrite_equal_tokens': 74.0, 'rewrite_shorter_prompt': 80.0}
+parity max diff: 0.0 | shorter ratio: 0.700 | preemptions delta: 0.0
+raw: /home/ubuntu/cache_test/cache_test/results/raw_trials.jsonl
+[server] stopping vLLM
