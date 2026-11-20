@@ -34,6 +34,26 @@ Execution details: concurrency = 1, temperature = 0.0, measured `max_tokens = 51
 - `rewrite_shorter_prompt`: cached 214, uncached 5219, TTFT 43.89 ms
 - Paired deltas: B-A TTFT +27.91 ms (ratio 1.70x); C-A TTFT +3.76 ms.
 
+## Visual results
+
+![TTFT comparison by arm](artifacts/vm_results/results/ttft_comparison.png)
+
+![Cached/uncached tokens by arm](artifacts/vm_results/results/arm_metrics_bars.png)
+
+![TTFT boxplot by arm](artifacts/vm_results/results/ttft_boxplot_by_arm.png)
+
+![Uncached tokens vs TTFT](artifacts/vm_results/results/uncached_vs_ttft_scatter.png)
+
+![Cached fraction by arm](artifacts/vm_results/results/cached_fraction_bars.png)
+
+![Break-even vs observed](artifacts/vm_results/results/break_even_vs_observed.png)
+
+![Protocol diagram](artifacts/vm_results/results/protocol_diagram.png)
+
+## Interpretation
+
+The equal-token rewrite invalidates the whole cached prefix: cache drops from 5,488 to ~213 tokens and uncached input rises to 7,549, so TTFT is +27.9 ms (≈1.7x `append_only`). The shorter rewrite also invalidates the prefix but still arrives only ~3.8 ms later than `append_only` despite being 30% shorter in total tokens (TTFT ≈1.10x). The runner-wide regression is ~5.1 ms per 1k uncached tokens. Answer accuracy stays high (84/74/80%), so the cost is timing, not correctness. A shorter rewrite becomes beneficial only if it shortens the total prompt enough to offset lost cached prefix; the run's break-even is ≈0.32 of A's total tokens (~2,487 tokens).
+
 ## Artifacts
 
 - `artifacts/vm_results/results/summary_metrics.json` / `summary_metrics.csv`
